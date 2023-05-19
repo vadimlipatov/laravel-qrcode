@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Стиль для печати
+@media print {
+  * {
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    visibility: hidden;
+  }
+  /* Блок который нужно отобразить */
+/* #print {
+    visibility: visible;
+  }
+  #btn {
+    visibility: hidden;
+  }
+}  */

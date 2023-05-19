@@ -15,7 +15,4 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
-/tmp
-/tests
-docker-compose.yml
 .DS_Store

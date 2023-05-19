@@ -126,6 +126,12 @@ watch(qrcode, (val) => {
   });
 });
 
+setInterval(() => {
+  axios.get("api/contacts").then((res) => {
+    contacts.value = res.data;
+  });
+}, 5000);
+
 onMounted(() => {
   axios.get("api/contacts").then((res) => {
     contacts.value = res.data;
@@ -150,19 +156,22 @@ onMounted(() => {
       console.error(e);
     });
 
-  scanner.addListener("scan", function (data) {
-    qrcode.value = data;
-    document.getElementById("text").value = data;
-    axios
-      // .post("https://market.sotnikov.studio/vadim/qrcode/contacts.php", {
-      .post("api/contacts", {
-        id: data,
-      })
-      .then((res) => {
-        contact.value = res.data;
-        console.log(res.data);
-        printCertificate(contact.value);
-      });
+  scanner.addListener("scan", function (newCode) {
+    qrcode.value = newCode;
+    const oldCode = document.getElementById("text").value;
+    document.getElementById("text").value = newCode;
+    if (newCode !== oldCode) {
+      axios
+        // .post("https://market.sotnikov.studio/vadim/qrcode/contacts.php", {
+        .post("api/contacts", {
+          id: newCode,
+        })
+        .then((res) => {
+          contact.value = res.data;
+          console.log(res.data);
+          printCertificate(contact.value);
+        });
+    }
   });
 });
 </script>

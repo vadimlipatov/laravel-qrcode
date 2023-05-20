@@ -13,7 +13,7 @@
         <div
           class="bg-white overflow-hidden shadow-sm sm:rounded-lg flex justify-between"
         >
-          <div class="p-6 text-gray-900">
+          <div class="p-6 text-gray-900 flex items-center justify-center">
             <Spinner v-if="loading" />
             <video width="200" id="preview" src=""></video>
           </div>

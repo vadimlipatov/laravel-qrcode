@@ -1,5 +1,5 @@
 <template>
-  <div class="w-2/3 mx-auto text-center">
+  <div class="w-4/5 mx-auto text-center">
     <h1 class="text-lg mb-4">Table</h1>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
       <table class="w-full text-sm text-left text-gray-500">

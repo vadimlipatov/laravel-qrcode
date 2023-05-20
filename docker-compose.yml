@@ -6,8 +6,10 @@ services:
     volumes:
       - ./:/var/www
       - ./_docker/nginx/conf.d:/etc/nginx/conf.d
+      - /etc/letsencrypt/:/etc/letsencrypt/
     ports:
       - 8080:80
+      - 443:443
     depends_on:
       - app
     container_name: inertia_nginx
@@ -23,9 +25,8 @@ services:
       - db
 
   db:
-    image: mysql:8.0
+    image: mysql:5.7
     restart: always
-    user: "1000:50"
     volumes:
       - ./tmp/db:/var/lib/mysql
     environment:
@@ -33,5 +34,5 @@ services:
         MYSQL_ROOT_PASSWORD: root
     ports:
       - 8101:3306
-    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --disable-partition-engine-check
     container_name: inertia_db

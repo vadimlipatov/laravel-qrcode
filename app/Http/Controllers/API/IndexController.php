@@ -14,7 +14,7 @@ class IndexController extends Controller
 {
   public function __invoke(Request $request)
   {
-    $members = Member::all();
+    $members = Member::all()->latest('created_at');
 
     return MemberResource::collection($members)->resolve();
   }

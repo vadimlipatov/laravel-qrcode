@@ -139,7 +139,7 @@ function addContactToTable() {
       (i) => i.item_id == contact.value.item_id && contacts.value.length
     )
   ) {
-    contacts.value = [...contacts.value, data];
+    contacts.value = [data, ...contacts.value];
   }
 }
 

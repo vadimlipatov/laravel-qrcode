@@ -94,10 +94,10 @@ function printCertificate(contact) {
   document.body.before(firstName);
   div.append(firstName);
   const lastName = document.createElement("p");
-  lastName.textContent = contact.lastName ?? "Фамилия";
+  lastName.textContent = contact.last_name ?? "Фамилия";
   div.append(lastName);
   const ticket = document.createElement("p");
-  ticket.textContent = contact.itemId ?? "Название билета";
+  ticket.textContent = contact.item_id ?? "Название билета";
   div.append(ticket);
 
   document.body.before(div);
@@ -130,17 +130,16 @@ watch(qrcode, (val) => {
 function addContactToTable() {
   let data = {
     name: contact.value.name,
+    item_id: contact.value.item_id,
     last_name: contact.value.last_name,
     created_at: contact.value.created_at,
   };
-  console.log(data);
   if (
     !contacts.value.find(
       (i) => i.item_id == contact.value.item_id && contacts.value.length
     )
   ) {
-    contacts.value = [data, ...contacts.value];
-    console.log(contacts.value);
+    contacts.value = [...contacts.value, data];
   }
 }
 

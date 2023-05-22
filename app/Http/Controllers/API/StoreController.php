@@ -69,9 +69,10 @@ class StoreController extends Controller
 
     return [
       'id' => $member['id'],
+      'item_id' => $member['item_id'],
       'name' => $member['name'],
-      'lastName' => $member['last_name'],
-      'createdAt' => $member['created_at']->format('d-m-Y H:i')
+      'last_name' => $member['last_name'],
+      'created_at' => $member['created_at']->format('d-m-Y H:i')
     ];
   }
 }

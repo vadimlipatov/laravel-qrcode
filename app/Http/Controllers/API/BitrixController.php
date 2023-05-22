@@ -15,13 +15,15 @@ class BitrixController extends Controller
 {
   public function __invoke(Request $request)
   {
+    // logger()->info($request);
 
     Contact::firstOrCreate([
-      'item_id' => $request->item_id, [
-        'name' => $request->name,
-        'last_name' => $request->last_name,
-        'entity_type_id' => $request->entity_type_id,
-      ]
+      'item_id' => $request->item_id
+    ], [
+      'name' => $request->name,
+      'last_name' => $request->last_name,
+      'entity_type_id' => $request->entity_type_id,
+
 
     ]);
 

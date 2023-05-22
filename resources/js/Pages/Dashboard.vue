@@ -20,14 +20,14 @@
           <div class="flex items-center p-6">
             <div class="" id="print">
               <p>{{ contact.name ?? "Имя" }}</p>
-              <p>{{ contact.lastName ?? "Фамилия" }}</p>
-              <p>{{ contact.itemId ?? "Название билета" }}</p>
+              <p>{{ contact.last_name ?? "Фамилия" }}</p>
+              <p>{{ contact.item_id ?? "Название билета" }}</p>
               <p class="pt-2" id="btn">
                 <button
                   @click="printCertificate(contact)"
                   class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
                 >
-                  Print
+                  Печать
                 </button>
               </p>
             </div>
@@ -130,7 +130,7 @@ watch(qrcode, (val) => {
 function addContactToTable() {
   let data = {
     name: contact.value.name,
-    last_name: contact.value.lastName,
+    last_name: contact.value.last_name,
     created_at: contact.value.created_at,
   };
   contacts.value = [data, ...contacts.value];
@@ -140,7 +140,6 @@ onMounted(() => {
   // заполнение таблицы контактов из БД
   axios.get("api/contacts").then((res) => {
     contacts.value = res.data;
-    console.log(res);
   });
 
   // инициализация сканера
@@ -168,14 +167,12 @@ onMounted(() => {
     document.getElementById("text").value = newCode;
     if (newCode !== oldCode) {
       axios
-        // .post("https://market.sotnikov.studio/vadim/qrcode/contacts.php", {
         .post("api/contacts", {
           itemId: newCode,
         })
         .then((res) => {
           contact.value = res.data;
           addContactToTable();
-          console.log(res.data);
           printCertificate(contact.value);
         });
     }

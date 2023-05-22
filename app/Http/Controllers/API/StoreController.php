@@ -26,8 +26,6 @@ class StoreController extends Controller
       ]
     ]);
 
-    dd($member);
-
     // смарт-процесс должен перейти на статус "Пришел на мероприятие"
     define("WEBHOOK", "https://kombat.bitrix24.ru/rest/273/0s1xdvorwl20jdzs/");
 
@@ -61,7 +59,9 @@ class StoreController extends Controller
           "stageId" => 'DT163_29:UC_0K78KQ' // final stage
         ]
       ]
-    )['result'];
+    );
+
+    logger()->info($res);
 
 
     return [

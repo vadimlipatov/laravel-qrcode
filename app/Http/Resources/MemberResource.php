@@ -16,9 +16,10 @@ class MemberResource extends JsonResource
   {
     return [
       'id' => $this->id,
+      'item_id' => $this->item_id,
       'name' => $this->name,
-      'content' => $this->content,
-      'created_at' => $this->created_at->format('d.m.Y H:i'),
+      'last_name' => $this->last_name,
+      'create_at' => $this->created_at->format('d.m.Y H:i'),
     ];
   }
 }

@@ -22,10 +22,10 @@
               scope="row"
               class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
             >
-              {{ contact.id }}
+              {{ contact.item_id }}
             </th>
             <td class="px-6 py-4">{{ contact.name }}</td>
-            <td class="px-6 py-4">{{ contact.content }}</td>
+            <td class="px-6 py-4">{{ contact.last_name }}</td>
             <td class="px-6 py-4">{{ contact.created_at }}</td>
             <td class="px-6 py-4">
               <button

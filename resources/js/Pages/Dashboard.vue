@@ -137,7 +137,7 @@ function addContactToTable() {
 }
 
 onMounted(() => {
-  // заполнение таблицы контактов из БД
+  // все контакты
   axios.get("api/contacts").then((res) => {
     contacts.value = res.data;
   });
@@ -171,6 +171,7 @@ onMounted(() => {
           itemId: newCode,
         })
         .then((res) => {
+          // запись в шторку
           contact.value = res.data;
           addContactToTable();
           printCertificate(contact.value);

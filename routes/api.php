@@ -21,4 +21,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['prefix' => 'contacts'], function () {
   Route::get('/', \App\Http\Controllers\API\IndexController::class);
   Route::post('/', \App\Http\Controllers\API\StoreController::class);
+  Route::post('/bitrix', \App\Http\Controllers\API\BitrixController::class);
 });

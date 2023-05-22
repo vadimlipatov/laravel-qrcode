@@ -13,21 +13,15 @@
         <div
           class="bg-white overflow-hidden shadow-sm sm:rounded-lg flex justify-between"
         >
-          <div class="p-6 text-gray-900 flex items-center justify-center">
-            <Spinner v-if="loading" />
-            <video width="200" id="preview" src=""></video>
+          <div class="p-6 w-60 text-gray-900 flex items-center justify-center">
+            <Spinner v-if="loading" style="position: absolute" />
+            <video id="preview"></video>
           </div>
           <div class="flex items-center p-6">
             <div class="" id="print">
-              <template v-if="contact.name">
-                <p>{{ contact.name }}</p>
-                <p>{{ contact.lastName }}</p>
-              </template>
-              <template v-else>
-                <p>Имя</p>
-                <p>Фамилия</p>
-              </template>
-              <p>Название билета</p>
+              <p>{{ contact.name ?? "Имя" }}</p>
+              <p>{{ contact.lastName ?? "Фамилия" }}</p>
+              <p>{{ contact.itemId ?? "Название билета" }}</p>
               <p class="pt-2" id="btn">
                 <button
                   @click="printCertificate(contact)"
@@ -41,7 +35,7 @@
           <div class="flex items-center p-6">
             <InputLabel value="Scanner"> </InputLabel>
             <input
-              class="ml-4 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+              class="ml-2 w-3/5 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
               type="text"
               id="text"
               name="text"
@@ -96,14 +90,14 @@ function printCertificate(contact) {
   // создание верстки
   const div = document.createElement("div");
   const firstName = document.createElement("p");
-  firstName.textContent = contact.name;
+  firstName.textContent = contact.name ?? "Имя";
   document.body.before(firstName);
   div.append(firstName);
   const lastName = document.createElement("p");
-  lastName.textContent = contact.lastName;
+  lastName.textContent = contact.lastName ?? "Фамилия";
   div.append(lastName);
   const ticket = document.createElement("p");
-  ticket.textContent = "Название билета";
+  ticket.textContent = contact.itemId ?? "Название билета";
   div.append(ticket);
 
   document.body.before(div);
@@ -115,6 +109,7 @@ function printCertificate(contact) {
     app.style.visibility = "visible";
   }, 100);
 }
+
 provide("printCertificate", {
   printCertificate,
 });
@@ -122,22 +117,33 @@ provide("printCertificate", {
 watch(qrcode, (val) => {
   axios.get("api/contacts").then((res) => {
     contacts.value = res.data;
-    console.log(res.data);
+    // console.log(res.data);
   });
 });
 
-setInterval(() => {
-  axios.get("api/contacts").then((res) => {
-    contacts.value = res.data;
-  });
-}, 5000);
+// setInterval(() => {
+//   axios.get("api/contacts").then((res) => {
+//     contacts.value = res.data;
+//   });
+// }, 5000);
+
+function addContactToTable() {
+  let data = {
+    name: contact.value.name,
+    last_name: contact.value.lastName,
+    created_at: contact.value.created_at,
+  };
+  contacts.value = [data, ...contacts.value];
+}
 
 onMounted(() => {
+  // заполнение таблицы контактов из БД
   axios.get("api/contacts").then((res) => {
     contacts.value = res.data;
     console.log(res);
   });
 
+  // инициализация сканера
   let scanner = new Instascan.Scanner({
     video: document.getElementById("preview"),
   });
@@ -164,10 +170,11 @@ onMounted(() => {
       axios
         // .post("https://market.sotnikov.studio/vadim/qrcode/contacts.php", {
         .post("api/contacts", {
-          id: newCode,
+          itemId: newCode,
         })
         .then((res) => {
           contact.value = res.data;
+          addContactToTable();
           console.log(res.data);
           printCertificate(contact.value);
         });

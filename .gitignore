@@ -18,3 +18,4 @@ yarn-error.log
 .DS_Store
 ./tmp
 docker-compose.yml
+_docker/nginx/conf.d/nginx.conf

@@ -7,7 +7,7 @@ use App\Http\Requests\Post\StoreRequest;
 use App\Http\Requests\Post\UpdateRequest;
 use App\Http\Resources\Post\PostResource;
 use App\Models\Member;
-use App\Models\Post;
+use App\Models\Contact;
 use App\Http\Resources\MemberResource;
 use Illuminate\Http\Request;
 
@@ -15,7 +15,21 @@ class StoreController extends Controller
 {
   public function __invoke(Request $request)
   {
-    define("WEBHOOK", "https://sotnikovstudio.bitrix24.ru/rest/255/cm5iyc5ji51fi1ky/");
+    $contact = Contact::where('item_id', $request->itemId)->first();
+
+    $member = Member::firstOrCreate([
+      'name' => $contact->name, // unique
+      [
+        'last_name' => $contact->last_name,
+        'item_id' => $contact->item_id,
+        'entity_type_id' => $contact->entity_type_id
+      ]
+    ]);
+
+    dd($member);
+
+    // смарт-процесс должен перейти на статус "Пришел на мероприятие"
+    define("WEBHOOK", "https://kombat.bitrix24.ru/rest/273/0s1xdvorwl20jdzs/");
 
     function executeRest($method, $params = array())
     {
@@ -38,38 +52,23 @@ class StoreController extends Controller
       return json_decode($result, true);
     }
 
-    $contact = executeRest(
-      "crm.contact.get",
+    $res = executeRest(
+      "crm.item.update",
       [
-        'id'  => $request->id
+        'entityTypeId' => $contact->entity_type_id, // 163
+        'id'  => $contact->item_id,
+        'fields' => [
+          "stageId" => 'DT163_29:UC_0K78KQ' // final stage
+        ]
       ]
     )['result'];
 
-    $comment = executeRest(
-      "crm.contact.update",
-      [
-        'id'  => $request->id,
-        'fields' => [
-          "COMMENTS" => 'qr'
-        ]
-      ]
-    );
 
-    $member = Member::firstOrCreate([
-      'name' => $contact['NAME'] // уникальность
-    ], [
-      'content' => $contact['ID']
-    ]);
-
-
-
-    // return MemberResource::make($member)->resolve();
     return [
-      'id' => $contact['ID'],
-      'name' => $contact['NAME'],
-      'lastName' => $contact['LAST_NAME'],
-      'secondName' => $contact['SECOND_NAME'],
-      'comments' => $contact['COMMENTS'],
+      'id' => $member['id'],
+      'name' => $member['name'],
+      'lastName' => $member['last_name'],
+      'createdAt' => $member['created_at']->format('d-m-Y H:i')
     ];
   }
 }

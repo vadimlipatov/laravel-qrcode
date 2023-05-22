@@ -40,7 +40,12 @@ const submit = () => {
 
     <form @submit.prevent="submit">
       <div>
-        <InputLabel for="code" value="Enter Code" class="text-center" />
+        <InputLabel
+          for="code"
+          value="Введите код регистрационной стойки
+"
+          class="text-center"
+        />
 
         <TextInput
           id="code"
@@ -106,7 +111,7 @@ const submit = () => {
           :class="{ 'opacity-25': form.processing }"
           :disabled="form.processing"
         >
-          Log in
+          <span class="flex content-center">Авторизоваться</span>
         </PrimaryButton>
       </div>
     </form>

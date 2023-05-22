@@ -133,7 +133,13 @@ function addContactToTable() {
     last_name: contact.value.last_name,
     created_at: contact.value.created_at,
   };
-  contacts.value = [data, ...contacts.value];
+  if (
+    !contacts.value.find(
+      (i) => i.item_id == contact.value.item_id && contacts.value.length
+    )
+  ) {
+    contacts.value = [data, ...contacts.value];
+  }
 }
 
 onMounted(() => {

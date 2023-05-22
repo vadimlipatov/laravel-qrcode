@@ -17,14 +17,17 @@ class StoreController extends Controller
   {
     $contact = Contact::where('item_id', $request->itemId)->first();
 
-    $member = Member::firstOrCreate([
-      'name' => $contact->name, // unique
+    $member = Member::firstOrCreate(
+      [
+        'name' => $contact->name
+      ], // unique
       [
         'last_name' => $contact->last_name,
         'item_id' => $contact->item_id,
         'entity_type_id' => $contact->entity_type_id
+
       ]
-    ]);
+    );
 
     // смарт-процесс должен перейти на статус "Пришел на мероприятие"
     define("WEBHOOK", "https://kombat.bitrix24.ru/rest/273/0s1xdvorwl20jdzs/");

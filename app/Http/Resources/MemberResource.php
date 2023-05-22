@@ -19,7 +19,7 @@ class MemberResource extends JsonResource
       'item_id' => $this->item_id,
       'name' => $this->name,
       'last_name' => $this->last_name,
-      'create_at' => $this->created_at->format('d.m.Y H:i'),
+      'created_at' => $this->created_at->format('d.m.Y H:i'),
     ];
   }
 }
